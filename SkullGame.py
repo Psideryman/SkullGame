@@ -3,6 +3,8 @@ from RandomPlayer import RandomPlayer
 from DocilePlayer import DocilePlayer
 from PacifistPlayer import PacifistPlayer
 from AggressivePlayer import AggressivePlayer
+from ObservantPlayer import ObservantPlayer
+from EarlyBidder import EarlyBidder
 
 class SkullGame:
     def __init__(self, players):
@@ -92,7 +94,7 @@ class SkullGame:
         current_index += 1
 
         # Continue bidding process
-        while len(self.active_bidders) - len(folded) > 1:
+        while len(self.active_bidders) - len(folded) > 1 and self.current_bid < max_possible:
             current_player = active_players[current_index % len(active_players)]
             if current_player not in self.active_bidders or current_player in folded:
                 current_index += 1
@@ -193,7 +195,9 @@ if __name__ == "__main__":
         PacifistPlayer("PacifistPete"),
         PacifistPlayer("PacifistPeter"),
         PacifistPlayer("PacifistPaul"),
-        DocilePlayer("DocileDora")
+        DocilePlayer("DocileDora"),
+        ObservantPlayer("ObservantOdie"),
+        EarlyBidder("EarlyErnest")
     ]
 
     # Run the game

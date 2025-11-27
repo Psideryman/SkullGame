@@ -3,6 +3,8 @@ from RandomPlayer import RandomPlayer
 from DocilePlayer import DocilePlayer
 from PacifistPlayer import PacifistPlayer
 from AggressivePlayer import AggressivePlayer
+from ObservantPlayer import ObservantPlayer
+from EarlyBidder import EarlyBidder
 import statistics
 
 def simulate(num_games=200, verbose=False):
@@ -10,21 +12,24 @@ def simulate(num_games=200, verbose=False):
         "Aggressive": 0,
         "Pacifist": 0,
         "Docile": 0,
-        "Random": 0
+        "Random": 0,
+        "EarlyBidder" : 0
     }
 
     eliminations = {
         "Aggressive": 0,
         "Pacifist": 0,
         "Docile": 0,
-        "Random": 0
+        "Random": 0,
+        "EarlyBidder" : 0
     }
 
     cards_remaining = {
         "Aggressive": [],
         "Pacifist": [],
         "Docile": [],
-        "Random": []
+        "Random": [],
+        "EarlyBidder" : []
     }
 
     elimination_wins = 0
@@ -36,7 +41,8 @@ def simulate(num_games=200, verbose=False):
             AggressivePlayer("AggressiveAndy"),
             PacifistPlayer("PacifistPete"),
             DocilePlayer("DocileDora"),
-            RandomPlayer("RandomRandy")
+            RandomPlayer("RandomRandy"),
+            EarlyBidder("EarlyEddie")
         ]
 
         game = SkullGame(players)
@@ -73,6 +79,8 @@ def simulate(num_games=200, verbose=False):
             results["Docile"] += 1
         elif isinstance(winner, RandomPlayer):
             results["Random"] += 1
+        elif isinstance(winner, EarlyBidder):
+            results["EarlyBidder"] += 1
 
         # --- Record elimination and hand stats ---
         for p in players:
@@ -128,4 +136,4 @@ def simulate(num_games=200, verbose=False):
     }
 
 if __name__ == "__main__":
-    simulate(1000, verbose=False)
+    simulate(100000, verbose=False)

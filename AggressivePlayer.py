@@ -14,15 +14,22 @@ class AggressivePlayer(Player):
         
         flowers = [c for c in self.hand if c.kind == "flower"]
         skulls = [c for c in self.hand if c.kind == "skull"]
-
-        # Preferred strategy: play flowers first, then skulls
-        if flowers:
-            card = flowers[0]
-        elif skulls:
-            card = skulls[0]
+        
+        # Play skull first, then flower on 2nd or 3rd placement
+        if len(self.pile) == 0:
+            # First card: play skull
+            card = flowers[0] if flowers else skulls[0]
+        elif len(self.pile) in [1, 2]:
+            # 2nd or 3rd card: play flower
+            card = skulls[0] if skulls else flowers[0]
         else:
-            # fallback — shouldn't happen, but just in case
-            card = random.choice(self.hand)
+            # After that: play whatever is left
+            if flowers:
+                card = flowers[0]
+            elif skulls:
+                card = skulls[0]
+            else:
+                card = random.choice(self.hand)
         
         self.hand.remove(card)
         self.pile.append(card)
@@ -42,7 +49,7 @@ class AggressivePlayer(Player):
             return None
         # Randomly raise 1-3 above current bid
         self.hasBid = True
-        return min(max_possible, current_bid + random.randint(1, 3))
+        return min(max_possible, current_bid + random.randint(1, max(1,max_possible//2)))
 
     def reveal_cards(self, game, to_reveal, revealed):
         # Similar to RandomPlayer
